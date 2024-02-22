@@ -1,6 +1,15 @@
+app:
+  eureka-server: localhost
+  keycloak-url: http://138.3.248.186:8888
+
 server:
   port: 9002
 
 spring:
   application:
     name: user-service
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${app.keycloak-url}/realms/StudentSpace
