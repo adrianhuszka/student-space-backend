@@ -1,18 +1,17 @@
 package hu.StudentSpace.config;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.convert.converter.Converter;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsConfigurationSource;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
-
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
@@ -20,7 +19,7 @@ import java.util.Arrays;
 @Configuration
 @EnableWebFluxSecurity
 public class SecurityConfig {
-    private final String[] allowedOrigins = new String[] {
+    private final String[] allowedOrigins = new String[]{
             "http://localhost:3000",
             "http://127.0.0.1:3000"
     };
@@ -40,7 +39,8 @@ public class SecurityConfig {
                         .pathMatchers("GET", "/v3/api-docs/**").permitAll()
                         .pathMatchers("GET", "/webjars/**").permitAll()
 
-                        .pathMatchers("GET", "/users/**").authenticated()
+                        .pathMatchers("GET", "/api/v1/users/**").authenticated()
+                        .pathMatchers("/api/v1/administration/**").authenticated()
                         .anyExchange().authenticated()
                 )
                 .oauth2ResourceServer(oauth2ResourceServerSpec -> oauth2ResourceServerSpec

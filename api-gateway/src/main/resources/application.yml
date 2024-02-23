@@ -1,6 +1,5 @@
 app:
   eureka-server: localhost
-  keycloak-url: http://138.3.248.186:8888
 
 spring:
   cloud:
@@ -20,7 +19,6 @@ spring:
           uri: http://${app.eureka-server}:8761
           predicates:
             - Path=/eureka/**
-
         # user-service routing
         - id: users-service
           uri: lb://user-service
@@ -28,11 +26,18 @@ spring:
             - Path=/api/v1/users/**
           filters:
             - AddResponseHeader=X-Powered-By, StudentSpace Gateway Service
+        # administration-service routing
+        - id: administration-service
+          uri: lb://administration-service
+          predicates:
+            - Path=/api/v1/administration/**
+          filters:
+            - AddResponseHeader=X-Powered-By, StudentSpace Gateway Service
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: ${app.keycloak-url}/realms/StudentSpace
+          issuer-uri: ${KEYCLOAK_URL}/realms/StudentSpace
   application:
     name: api-gateway
 
@@ -64,6 +69,8 @@ springdoc:
         url: /v3/api-docs
       - name: User Service API
         url: /api/user/v3/api-docs
+      - name: Administration Service API
+        url: /api/administration/v3/api-docs
 eureka:
   client:
     service-url:

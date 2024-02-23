@@ -1,0 +1,62 @@
+app:
+  keycloak-url: ${KEYCLOAK_URL}
+  keycloak-client-id: ${KEYCLOAK_CLIENT_ID}
+  keycloak-client-secret: ${KEYCLOAK_CLIENT_SECRET}
+  keycloak-realm: ${KEYCLOAK_REALM}
+
+spring:
+  application:
+    name: administration-service
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${KEYCLOAK_URL}/realms/StudentSpace
+server:
+  port: 0
+
+springdoc:
+  api-docs:
+    path: /api/v1/administration/v3/api-docs
+  swagger-ui:
+    path: /api/v1/administration/swagger-ui.html
+
+logging:
+  level:
+    root: info
+    sql: info
+    web: info
+    org:
+      springframework:
+        cloud:
+          gateway:
+            route:
+              RouteDefinitionLocator: info
+      hibernate: info
+      com:
+        example:
+          administration: info
+  #  pattern:
+  #    level: "%5p [${springAppName:-},%X{X-B3-TraceId:-},%X{X-B3-SpanId:-},%X{X-Span-Export:-}] [%t] --- %c{1.}:%L - %m%n"
+  file:
+    name: ./logs/administration-service.log
+    path: ./logs/
+
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
+  tracing:
+    sampling:
+      probability: 1.0
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka

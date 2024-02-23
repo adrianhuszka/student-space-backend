@@ -2,8 +2,9 @@ app:
   eureka-server: localhost
   keycloak-url: http://138.3.248.186:8888
 
+
 server:
-  port: 9002
+  port: 0
 
 spring:
   application:
