@@ -1,12 +1,10 @@
 package hu.StudentSpace.groups;
 
 import lombok.RequiredArgsConstructor;
-
-import java.util.List;
-
-import org.keycloak.representations.idm.GroupRepresentation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -16,7 +14,7 @@ public class GroupController {
     private final GroupService groupService;
 
     @GetMapping
-    public ResponseEntity<List<GroupRepresentation>> listGroups() {
+    public ResponseEntity<List<GroupDTO>> listGroups() {
         return ResponseEntity.ok(groupService.listGroups());
     }
 
