@@ -6,10 +6,10 @@ import org.springframework.stereotype.Service;
 import java.util.function.Function;
 
 @Service
-public class UserDTOMapper implements Function<UserRepresentation, UserDTO> {
+public class UserDTOForGroupsMapper implements Function<UserRepresentation, UserDTOForGroups> {
     @Override
-    public UserDTO apply(UserRepresentation userRepresentation) {
-        return new UserDTO(
+    public UserDTOForGroups apply(UserRepresentation userRepresentation) {
+        return new UserDTOForGroups(
                 userRepresentation.getId(),
                 userRepresentation.getUsername(),
                 userRepresentation.getEmail(),

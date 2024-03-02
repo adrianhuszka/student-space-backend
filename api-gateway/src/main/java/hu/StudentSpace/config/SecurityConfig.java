@@ -21,7 +21,8 @@ import java.util.Arrays;
 public class SecurityConfig {
     private final String[] allowedOrigins = new String[]{
             "http://localhost:3000",
-            "http://127.0.0.1:3000"
+            "http://127.0.0.1:3000",
+            "http://84.3.183.248:3000"
     };
 
     @Bean
@@ -39,7 +40,6 @@ public class SecurityConfig {
                         .pathMatchers("GET", "/v3/api-docs/**").permitAll()
                         .pathMatchers("GET", "/webjars/**").permitAll()
 
-                        .pathMatchers("GET", "/api/v1/users/**").authenticated()
                         .pathMatchers("/api/v1/administration/**").authenticated()
                         .anyExchange().authenticated()
                 )

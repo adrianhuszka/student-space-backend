@@ -1,6 +1,7 @@
 package hu.StudentSpace.groups;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.representations.idm.GroupRepresentation;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class GroupService {
@@ -36,18 +38,29 @@ public class GroupService {
         return groupDTOMapper.apply(keycloak.realm(realm).groups().group(id));
     }
 
-    public void createGroup(@NotNull final GroupRequest request) {
+    public GroupResponse createGroup(@NotNull final GroupRequest request) {
+        log.info("Creating group: name: {}, parentId: {}", request.name(), request.parentId());
+
         final var createdGroup = new GroupRepresentation();
         createdGroup.setName(request.name());
-        createdGroup.setPath(request.path());
 
-        keycloak.realm(realm).groups().add(createdGroup);
+        if (request.parentId() != null) {
+            createdGroup.setParentId(request.parentId());
+        }
+
+        final var response = keycloak.realm(realm).groups().add(createdGroup);
+
+        log.info("Response status: {} {}", response.getStatus(), response.getStatusInfo());
+
+        return new GroupResponse(
+                response.getStatus(), response.readEntity(String.class)
+        );
     }
 
     public void updateGroup(@NotNull final GroupRequest request) {
         final var group = keycloak.realm(realm).groups().group(request.id()).toRepresentation();
         group.setName(request.name());
-        group.setPath(request.path());
+        group.setParentId(request.parentId());
 
         keycloak.realm(realm).groups().group(request.id()).update(group);
     }

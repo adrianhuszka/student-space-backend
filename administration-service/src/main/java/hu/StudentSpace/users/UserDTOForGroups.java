@@ -1,6 +1,6 @@
 package hu.StudentSpace.users;
 
-public record UserDTO(
+public record UserDTOForGroups(
         String id,
         String username,
         String email,

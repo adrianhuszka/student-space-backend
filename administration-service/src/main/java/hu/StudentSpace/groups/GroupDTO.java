@@ -1,6 +1,6 @@
 package hu.StudentSpace.groups;
 
-import hu.StudentSpace.users.UserDTO;
+import hu.StudentSpace.users.UserDTOForGroups;
 import org.keycloak.representations.idm.GroupRepresentation;
 
 import java.util.List;
@@ -17,7 +17,7 @@ public record GroupDTO(
         List<String> realmRoles,
         Map<String, List<String>> clientRoles,
         Map<String, Boolean> access,
-        List<UserDTO> members
+        List<UserDTOForGroups> members
 
 ) {
 }
