@@ -1,6 +1,6 @@
 package hu.StudentSpace.groups;
 
-import hu.StudentSpace.users.UserDTOMapper;
+import hu.StudentSpace.users.UserDTOForGroupsMapper;
 import lombok.RequiredArgsConstructor;
 import org.keycloak.admin.client.resource.GroupResource;
 import org.springframework.stereotype.Service;
@@ -10,7 +10,7 @@ import java.util.function.Function;
 @Service
 @RequiredArgsConstructor
 public class GroupDTOMapper implements Function<GroupResource, GroupDTO> {
-    private final UserDTOMapper userDTOMapper;
+    private final UserDTOForGroupsMapper userDTOForGroupsMapper;
 
     @Override
     public GroupDTO apply(GroupResource groupResource) {
@@ -25,7 +25,7 @@ public class GroupDTOMapper implements Function<GroupResource, GroupDTO> {
                 groupResource.toRepresentation().getRealmRoles(),
                 groupResource.toRepresentation().getClientRoles(),
                 groupResource.toRepresentation().getAccess(),
-                groupResource.members() != null ? groupResource.members().stream().map(userDTOMapper).toList() : null
+                groupResource.members() != null ? groupResource.members().stream().map(userDTOForGroupsMapper).toList() : null
         );
     }
 }

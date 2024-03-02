@@ -8,7 +8,7 @@ import java.util.function.Function;
 
 
 @Service
-public class UserReresentationDTOMapper implements Function<UserRepresentation, UserRepresentationDTO> {
+public class UserRepresentationDTOMapper implements Function<UserRepresentation, UserRepresentationDTO> {
     public UserRepresentationDTO apply(@NotNull UserRepresentation userResource) {
         return new UserRepresentationDTO(
                 userResource.getId(),
