@@ -19,7 +19,6 @@ import java.util.Set;
 public class UserService {
     private final Keycloak keycloak;
     private final UserDTOMapper userDTOMapper;
-    private final UserRepresentationDTOMapper userRepresentationDTOMapper;
 
     @Value("${app.keycloak-realm}")
     private String realm;
