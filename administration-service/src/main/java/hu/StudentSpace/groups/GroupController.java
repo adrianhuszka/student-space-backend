@@ -16,8 +16,10 @@ public class GroupController {
     private final GroupService groupService;
 
     @GetMapping
-    public ResponseEntity<List<GroupDTO>> listGroups() {
-        return ResponseEntity.ok(groupService.listGroups());
+    public ResponseEntity<List<GroupDTO>> listGroups(@RequestParam(required = false) String search,
+                                                     @RequestParam(defaultValue = "0") int page,
+                                                     @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(groupService.listGroups(search, page, size));
     }
 
     @GetMapping("/{id}")

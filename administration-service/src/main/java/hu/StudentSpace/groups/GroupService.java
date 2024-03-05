@@ -21,8 +21,9 @@ public class GroupService {
     @Value("${app.keycloak-realm}")
     private String realm;
 
-    public List<GroupDTO> listGroups() {
-        final var groups = keycloak.realm(realm).groups().groups();
+    public List<GroupDTO> listGroups(String search, int page, int size) {
+        final var groupsResource = keycloak.realm(realm).groups();
+        final var groups = groupsResource.groups(search, page, size);
 
         List<GroupDTO> groupList = new ArrayList<>();
 
