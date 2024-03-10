@@ -42,9 +42,14 @@ public class UserService {
         return createdUser;
     }
 
+    public int countUsers() {
+        return keycloak.realm(realm).users().count();
+    }
+
     public Set<UserDTO> listUsers(String search, int page, int size) {
         final var usersResource = keycloak.realm(realm).users();
-        final var usersRep = usersResource.search(search, page, size);
+
+        final var usersRep = usersResource.search(search, page, size, false);
 
         final Set<UserDTO> userList = new HashSet<>();
 

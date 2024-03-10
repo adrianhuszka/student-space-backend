@@ -1,2 +1,9 @@
-package hu.StudentSpace.roles;public record RolesRequest() {
+package hu.StudentSpace.roles;
+
+import java.util.List;
+
+public record RolesRequest(
+        String id,
+        List<String> roleNames
+) {
 }

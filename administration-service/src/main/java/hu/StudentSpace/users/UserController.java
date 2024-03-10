@@ -14,6 +14,11 @@ import java.util.Set;
 public class UserController {
     private final UserService userService;
 
+    @GetMapping("/count")
+    public ResponseEntity<Integer> countUsers() {
+        return ResponseEntity.ok(userService.countUsers());
+    }
+
     @GetMapping
     public ResponseEntity<Set<UserDTO>> listUsers(
             @RequestParam(value = "search", required = false) String search,

@@ -8,7 +8,6 @@ import org.keycloak.representations.idm.GroupRepresentation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -21,18 +20,22 @@ public class GroupService {
     @Value("${app.keycloak-realm}")
     private String realm;
 
-    public List<GroupDTO> listGroups(String search, int page, int size) {
+    public int countGroups() {
+        log.info("Counting groups: {}", keycloak.realm(realm).groups().count());
+        return 1;
+    }
+    
+    public List<GroupRepresentation> listGroups(String search, int page, int size) {
         final var groupsResource = keycloak.realm(realm).groups();
-        final var groups = groupsResource.groups(search, page, size);
 
-        List<GroupDTO> groupList = new ArrayList<>();
+//        List<GroupDTO> groupList = new ArrayList<>();
+//
+//        for (GroupRepresentation group : groups) {
+//            GroupDTO groupDTO = getGroupById(group.getId());
+//            groupList.add(groupDTO);
+//        }
 
-        for (GroupRepresentation group : groups) {
-            GroupDTO groupDTO = getGroupById(group.getId());
-            groupList.add(groupDTO);
-        }
-
-        return groupList;
+        return groupsResource.groups(search, page, size, false);
     }
 
     public GroupDTO getGroupById(String id) {
