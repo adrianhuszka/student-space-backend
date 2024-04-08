@@ -22,7 +22,8 @@ public class SecurityConfig {
     private final String[] allowedOrigins = new String[]{
             "http://localhost:3000",
             "http://127.0.0.1:3000",
-            "http://84.3.183.248:3000"
+            "http://84.3.183.248:3000",
+            "http://localhost:4200",
     };
 
     @Bean
