@@ -36,8 +36,6 @@ logging:
       com:
         example:
           administration: info
-  #  pattern:
-  #    level: "%5p [${springAppName:-},%X{X-B3-TraceId:-},%X{X-B3-SpanId:-},%X{X-Span-Export:-}] [%t] --- %c{1.}:%L - %m%n"
   file:
     name: ./logs/administration-service.log
     path: ./logs/

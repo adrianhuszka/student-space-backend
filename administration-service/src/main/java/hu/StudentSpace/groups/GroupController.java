@@ -28,6 +28,11 @@ public class GroupController {
         return ResponseEntity.ok(groupService.listGroups(search, page, size));
     }
 
+    @GetMapping("/user/{userId}")
+    public List<String> getAllJoinedGroups(@PathVariable String userId) {
+        return groupService.getAllJoinedGroups(userId);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<GroupDTO> getGroupById(@PathVariable String id) {
         return ResponseEntity.ok(groupService.getGroupById(id));

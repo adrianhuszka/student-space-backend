@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -24,18 +25,15 @@ public class GroupService {
         log.info("Counting groups: {}", keycloak.realm(realm).groups().count());
         return 1;
     }
-    
+
     public List<GroupRepresentation> listGroups(String search, int page, int size) {
         final var groupsResource = keycloak.realm(realm).groups();
 
-//        List<GroupDTO> groupList = new ArrayList<>();
-//
-//        for (GroupRepresentation group : groups) {
-//            GroupDTO groupDTO = getGroupById(group.getId());
-//            groupList.add(groupDTO);
-//        }
-
         return groupsResource.groups(search, page, size, false);
+    }
+
+    public List<String> getAllJoinedGroups(String userId) {
+        return keycloak.realm(realm).users().get(userId).groups().stream().map(GroupRepresentation::getId).collect(Collectors.toList());
     }
 
     public GroupDTO getGroupById(String id) {
