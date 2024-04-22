@@ -7,6 +7,9 @@ import hu.StudentSpace.scene.SceneMembershipRole;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 @Getter
 @Setter
 @Builder
@@ -15,7 +18,10 @@ import lombok.*;
 @Entity
 @IdClass(SceneGroupMembershipId.class)
 @Table(name = "scene_group_membership", schema = "scene_service")
-public class SceneGroupMembership {
+public class SceneGroupMembership implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+    
     @Id
     @ManyToOne
     @JoinColumn(name = "group_id", referencedColumnName = "id")

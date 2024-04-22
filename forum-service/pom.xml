@@ -9,7 +9,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>scene-service</artifactId>
+    <artifactId>forum-service</artifactId>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>

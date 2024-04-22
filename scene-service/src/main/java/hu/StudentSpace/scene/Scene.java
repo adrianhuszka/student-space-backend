@@ -8,6 +8,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
@@ -21,6 +22,9 @@ import java.util.UUID;
 @NoArgsConstructor
 @Table(name = "scene", schema = "scene_service")
 public class Scene implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue
     private UUID id;
@@ -29,11 +33,8 @@ public class Scene implements Serializable {
     private String name;
     private String description;
 
-    @Column(columnDefinition = "boolean default false")
-    private Boolean archived;
-
-    @Column(columnDefinition = "boolean default false")
-    private Boolean deleted;
+    private Boolean archived = false;
+    private Boolean deleted = false;
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -51,9 +52,10 @@ public class Scene implements Serializable {
     @Column(nullable = false)
     private String ownerId;
 
-    @OneToMany(mappedBy = "scene", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "scene", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<SceneUserMembership> sceneUserMembership;
 
+    @JsonBackReference
     @OneToMany(mappedBy = "scene", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<SceneGroupMembership> sceneGroupMembership;
 }

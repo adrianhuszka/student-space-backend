@@ -7,7 +7,7 @@ server:
 
 spring:
   application:
-    name: scene-service
+    name: forum-service
   security:
     oauth2:
       resourceserver:
@@ -63,7 +63,7 @@ logging:
         example:
           administration: info
   file:
-    name: ./logs/scene-service.log
+    name: ./logs/forum-service.log
     path: ./logs/
 
 management:

@@ -1,5 +1,6 @@
 package hu.StudentSpace.scene;
 
+import hu.StudentSpace.exception.ResourceNotFoundException;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
@@ -17,29 +18,29 @@ public class SceneController {
     private final SceneService sceneService;
 
     @GetMapping
-    @Retry(name = "admin-service")
-    @TimeLimiter(name = "admin-service")
-    @CircuitBreaker(name = "admin-service", fallbackMethod = "ListAllScenesFallback")
+    @Retry(name = "services")
+    @TimeLimiter(name = "services")
+    @CircuitBreaker(name = "services", fallbackMethod = "ListAllScenesFallback")
     public CompletableFuture<ResponseEntity<List<Scene>>> listAllUserJoinedScenes(@RequestHeader("Authorization") String token) {
         return CompletableFuture.supplyAsync(() -> ResponseEntity.ok(sceneService.listAllUserJoinedScenes(token)));
     }
 
     @GetMapping("/archived")
-    @Retry(name = "admin-service")
-    @TimeLimiter(name = "admin-service")
-    @CircuitBreaker(name = "admin-service", fallbackMethod = "ListAllScenesFallback")
+    @Retry(name = "services")
+    @TimeLimiter(name = "services")
+    @CircuitBreaker(name = "services", fallbackMethod = "ListAllScenesFallback")
     public CompletableFuture<ResponseEntity<List<Scene>>> listAllUserJoinedScenesArchived(@RequestHeader("Authorization") String token) {
         return CompletableFuture.supplyAsync(() -> ResponseEntity.ok(sceneService.listAllUserJoinedScenesArchived(token)));
     }
 
-    public CompletableFuture<ResponseEntity<String>> ListAllScenesFallback() {
+    public CompletableFuture<ResponseEntity<String>> ListAllScenesFallback(@RequestHeader("Authorization") String token, ResourceNotFoundException ex) {
         return CompletableFuture.completedFuture(ResponseEntity.status(404).body("Admin service is not available at the moment. Please try again later. (Scene service fallback method)"));
     }
 
     @PostMapping
     public ResponseEntity<Scene> createScene(@RequestHeader("Authorization") String token, @RequestBody SceneRequest scene) {
         sceneService.createScene(scene, token);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(201).build();
     }
 
     @PutMapping

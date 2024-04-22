@@ -7,6 +7,7 @@ import hu.StudentSpace.scene.SceneMembershipRole;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 @Getter
@@ -18,6 +19,9 @@ import java.io.Serializable;
 @IdClass(SceneUserMembershipId.class)
 @Table(name = "scene_user_membership", schema = "scene_service")
 public class SceneUserMembership implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+    
     @Id
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")

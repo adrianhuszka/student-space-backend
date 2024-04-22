@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public enum SceneMembershipRole {
-    ADMIN,
+    OWNER,
     MODERATOR,
     TEACHER,
     STUDENT;
@@ -14,7 +14,7 @@ public enum SceneMembershipRole {
     @Contract(pure = true)
     public static SceneMembershipRole fromString(@NotNull String role) {
         return switch (role) {
-            case "ADMIN" -> ADMIN;
+            case "ADMIN" -> OWNER;
             case "MODERATOR" -> MODERATOR;
             case "TEACHER" -> TEACHER;
             case "STUDENT" -> STUDENT;

@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
@@ -21,6 +22,9 @@ import java.util.List;
 @Entity
 @Table(name = "keycloak_group", schema = "keycloak")
 public class GroupEntityHook implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+    
     @Id
     private String id;
 

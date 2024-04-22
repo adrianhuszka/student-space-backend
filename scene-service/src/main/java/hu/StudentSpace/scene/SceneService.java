@@ -7,6 +7,7 @@ import hu.StudentSpace.keycloakHooks.GroupEntityHookRepository;
 import hu.StudentSpace.keycloakHooks.UserEntityHookRepository;
 import hu.StudentSpace.sceneGroupMembership.SceneGroupMembership;
 import hu.StudentSpace.sceneUserMenbership.SceneUserMembership;
+import hu.StudentSpace.sceneUserMenbership.SceneUserMembershipRepository;
 import hu.StudentSpace.utils.JwtDecoder;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
@@ -24,13 +25,15 @@ public class SceneService {
     private final SceneRepository sceneRepository;
     private final UserEntityHookRepository userEntityHookRepository;
     private final GroupEntityHookRepository groupEntityHookRepository;
+    private final SceneUserMembershipRepository sceneUserMembershipRepository;
     private final JwtDecoder jwtDecoder;
     private final WebClient.Builder webClientBuilder;
 
-    private List<String> findUserGroupIds(@NotNull final String userId) {
+    private List<String> findUserGroupIds(@NotNull final String userId, @NotNull final String token) {
         return webClientBuilder.build()
                 .get()
                 .uri("http://administration-service/api/v1/administration/groups/user/" + userId)
+                .header("Authorization", token)
                 .retrieve()
                 .bodyToFlux(String.class)
                 .collectList()
@@ -38,10 +41,10 @@ public class SceneService {
     }
 
     public List<Scene> listAllUserJoinedScenes(@NotNull final String token) {
-        final var userId = jwtDecoder.decode(token).sub();
+        final var userId = jwtDecoder.decode(token).getSub();
         final var scenes = new ArrayList<>(sceneRepository.findAllBySceneUserMembership(userId));
 
-        List<String> groupIds = findUserGroupIds(userId);
+        List<String> groupIds = findUserGroupIds(userId, token);
 
         if (groupIds != null) {
             for (String groupId : groupIds) {
@@ -53,10 +56,10 @@ public class SceneService {
     }
 
     public List<Scene> listAllUserJoinedScenesArchived(@NotNull final String token) {
-        final var userId = jwtDecoder.decode(token).sub();
+        final var userId = jwtDecoder.decode(token).getSub();
         final var scenes = new ArrayList<>(sceneRepository.findAllBySceneUserMembershipArchived(userId));
 
-        List<String> groupIds = findUserGroupIds(userId);
+        List<String> groupIds = findUserGroupIds(userId, token);
 
         if (groupIds != null) {
             for (String groupId : groupIds) {
@@ -68,20 +71,42 @@ public class SceneService {
     }
 
     public void createScene(@NotNull final SceneRequest sceneRequest, @NotNull final String token) {
+        final var userId = jwtDecoder.decode(token).getSub();
+
+        final var user = userEntityHookRepository.findById(userId).orElseThrow(
+                () -> new ResourceNotFoundException("User not found")
+        );
+
         final var newScene = Scene.builder()
                 .name(sceneRequest.name())
                 .description(sceneRequest.description())
-                .ownerId(jwtDecoder.decode(token).sub())
+                .ownerId(userId)
+                .archived(false)
+                .deleted(false)
                 .build();
 
-        sceneRepository.save(newScene);
+        final var savedScene = sceneRepository.save(newScene);
+
+        final var savedMembership = sceneUserMembershipRepository.save(
+                SceneUserMembership.builder()
+                        .user(user)
+                        .scene(savedScene)
+                        .role(SceneMembershipRole.OWNER)
+                        .build()
+        );
+
+        savedScene.setSceneUserMembership(
+                List.of(savedMembership)
+        );
+
+        sceneRepository.save(savedScene);
     }
 
     public void update(@NotNull final SceneRequest sceneRequest, @NotNull final String token) {
         final var scene = sceneRepository.findById(UUID.fromString(sceneRequest.id()))
                 .orElseThrow(() -> new ResourceNotFoundException("Scene not found"));
 
-        if (!scene.getOwnerId().equals(jwtDecoder.decode(token).sub())) {
+        if (!scene.getOwnerId().equals(jwtDecoder.decode(token).getSub())) {
             throw new AccessDeniedException("You are not the owner of this scene");
         }
 
@@ -95,7 +120,7 @@ public class SceneService {
         final var scene = sceneRepository.findById(UUID.fromString(sceneId))
                 .orElseThrow(() -> new ResourceNotFoundException("Scene not found"));
 
-        if (!scene.getOwnerId().equals(jwtDecoder.decode(token).sub())) {
+        if (!scene.getOwnerId().equals(jwtDecoder.decode(token).getSub())) {
             throw new AccessDeniedException("You are not the owner of this scene");
         }
 
@@ -120,7 +145,7 @@ public class SceneService {
         final var scene = sceneRepository.findById(UUID.fromString(sceneId))
                 .orElseThrow(() -> new ResourceNotFoundException("Scene not found"));
 
-        if (!scene.getOwnerId().equals(jwtDecoder.decode(token).sub())) {
+        if (!scene.getOwnerId().equals(jwtDecoder.decode(token).getSub())) {
             throw new AccessDeniedException("You are not the owner of this scene");
         }
 
@@ -142,7 +167,7 @@ public class SceneService {
         final var scene = sceneRepository.findById(UUID.fromString(sceneId))
                 .orElseThrow(() -> new ResourceNotFoundException("Scene not found"));
 
-        if (!scene.getOwnerId().equals(jwtDecoder.decode(token).sub())) {
+        if (!scene.getOwnerId().equals(jwtDecoder.decode(token).getSub())) {
             throw new AccessDeniedException("You are not the owner of this scene");
         }
 
@@ -155,7 +180,7 @@ public class SceneService {
         final var scene = sceneRepository.findById(UUID.fromString(sceneId))
                 .orElseThrow(() -> new ResourceNotFoundException("Scene not found"));
 
-        if (!scene.getOwnerId().equals(jwtDecoder.decode(token).sub())) {
+        if (!scene.getOwnerId().equals(jwtDecoder.decode(token).getSub())) {
             throw new AccessDeniedException("You are not the owner of this scene");
         }
 
@@ -168,7 +193,7 @@ public class SceneService {
         final var scene = sceneRepository.findById(UUID.fromString(sceneId))
                 .orElseThrow(() -> new ResourceNotFoundException("Scene not found"));
 
-        if (!scene.getOwnerId().equals(jwtDecoder.decode(token).sub())) {
+        if (!scene.getOwnerId().equals(jwtDecoder.decode(token).getSub())) {
             throw new AccessDeniedException("You are not the owner of this scene");
         }
 
@@ -182,7 +207,7 @@ public class SceneService {
         final var scene = sceneRepository.findById(UUID.fromString(sceneId))
                 .orElseThrow(() -> new ResourceNotFoundException("Scene not found"));
 
-        if (!scene.getOwnerId().equals(jwtDecoder.decode(token).sub())) {
+        if (!scene.getOwnerId().equals(jwtDecoder.decode(token).getSub())) {
             throw new AccessDeniedException("You are not the owner of this scene");
         }
 

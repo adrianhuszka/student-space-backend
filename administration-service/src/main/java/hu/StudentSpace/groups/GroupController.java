@@ -29,8 +29,8 @@ public class GroupController {
     }
 
     @GetMapping("/user/{userId}")
-    public List<String> getAllJoinedGroups(@PathVariable String userId) {
-        return groupService.getAllJoinedGroups(userId);
+    public ResponseEntity<List<String>> getAllJoinedGroups(@PathVariable String userId) {
+        return ResponseEntity.ok(groupService.getAllJoinedGroups(userId));
     }
 
     @GetMapping("/{id}")

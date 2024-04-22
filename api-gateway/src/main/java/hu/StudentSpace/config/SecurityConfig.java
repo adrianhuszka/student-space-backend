@@ -41,7 +41,20 @@ public class SecurityConfig {
                         .pathMatchers("GET", "/v3/api-docs/**").permitAll()
                         .pathMatchers("GET", "/webjars/**").permitAll()
 
+                        // Administration endpoints
                         .pathMatchers("/api/v1/administration/**").authenticated()
+
+                        // Scene endpoints
+                        .pathMatchers("/api/v1/scene/**", "POST", "PUT", "DELETE").hasAnyRole("ROLE_ADMIN", "ROLE_TEACHER")
+                        .pathMatchers("/api/v1/scene/**", "GET").hasAnyRole("ROLE_ADMIN", "ROLE_TEACHER", "ROLE_STUDENT")
+
+                        // Forum endpoints
+                        .pathMatchers("/api/v1/forum/room/**", "POST", "PUT", "DELETE").hasAnyRole("ROLE_ADMIN", "ROLE_TEACHER")
+                        .pathMatchers("/api/v1/forum/room/**", "GET").hasAnyRole("ROLE_ADMIN", "ROLE_TEACHER", "ROLE_STUDENT")
+                        .pathMatchers("/api/v1/forum/message/**").hasAnyRole("ROLE_ADMIN", "ROLE_TEACHER", "ROLE_STUDENT")
+                        .pathMatchers("/api/v1/forum/like/**").hasAnyRole("ROLE_ADMIN", "ROLE_TEACHER", "ROLE_STUDENT")
+
+                        // Anything else
                         .anyExchange().authenticated()
                 )
                 .oauth2ResourceServer(oauth2ResourceServerSpec -> oauth2ResourceServerSpec

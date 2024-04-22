@@ -33,6 +33,20 @@ spring:
             - Path=/api/v1/administration/**
           filters:
             - AddResponseHeader=X-Powered-By, StudentSpace Gateway Service
+        # scene-service routing
+        - id: scene-service
+          uri: lb://scene-service
+          predicates:
+            - Path=/api/v1/scenes/**
+          filters:
+            - AddResponseHeader=X-Powered-By, StudentSpace Gateway Service
+        # forum-service routing
+        - id: forum-service
+          uri: lb://forum-service
+          predicates:
+            - Path=/api/v1/forum/**
+          filters:
+            - AddResponseHeader=X-Powered-By, StudentSpace Gateway Service
   security:
     oauth2:
       resourceserver:
