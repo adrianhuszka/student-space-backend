@@ -7,7 +7,7 @@ for /f "usebackq delims=" %%p in (`%psCommand%`) do set password=%%p
 
 echo Starting Maven Build and Push to Docker
 
-call mvn -Ddocker.username=%username% -Ddocker.password=%password% clean compile jib:build -e
+call mvn -Ddockerusername=%username% -Ddockerpassword=%password% clean compile jib:build -e
 
 echo Maven Build and Push to Docker Completed
 PAUSE
