@@ -3,9 +3,12 @@ package hu.StudentSpace.forum;
 import hu.StudentSpace.forumMessages.ForumMessages;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,6 +33,15 @@ public class Forum implements Serializable {
     @Column(nullable = false)
     private UUID sceneId;
 
-    @OneToMany(mappedBy = "forum")
+    @OneToMany(mappedBy = "forum", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ForumMessages> messages;
+
+    @CreationTimestamp
+    private Timestamp createdAt;
+
+    @UpdateTimestamp
+    private Timestamp updatedAt;
+    
+    private boolean isDeleted;
+    private Timestamp deletedAt;
 }

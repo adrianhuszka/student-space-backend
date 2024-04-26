@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import hu.StudentSpace.forumMessages.ForumMessages;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Formula;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -29,6 +30,16 @@ public class ForumLikesMessage implements Serializable {
     @JoinColumn(name = "forum_message_id")
     private ForumMessages forumMessage;
 
+    @JsonBackReference
+    @Column(name = "user_id")
     private String userId;
-    private short liked;
+
+    @Formula("(SELECT ue.username FROM keycloak.user_entity ue WHERE ue.id = user_id)")
+    private String userName;
+
+    @Formula("(SELECT CONCAT(ue.first_name, ' ', ue.last_name) FROM keycloak.user_entity ue WHERE ue.id = user_id)")
+    private String name;
+
+    @Enumerated(EnumType.STRING)
+    private LikedEnum liked;
 }

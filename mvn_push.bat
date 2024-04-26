@@ -1,5 +1,5 @@
 @echo off
-SET /P username= Enter Docker Username : 
+SET /P username=Enter Docker Username :
 set "psCommand=powershell -Command "$pword = read-host 'Enter Docker Password' -AsSecureString ; ^
     $BSTR=[System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($pword); ^
         [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR)""

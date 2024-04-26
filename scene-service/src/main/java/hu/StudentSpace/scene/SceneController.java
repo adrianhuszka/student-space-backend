@@ -32,9 +32,14 @@ public class SceneController {
     public CompletableFuture<ResponseEntity<List<Scene>>> listAllUserJoinedScenesArchived(@RequestHeader("Authorization") String token) {
         return CompletableFuture.supplyAsync(() -> ResponseEntity.ok(sceneService.listAllUserJoinedScenesArchived(token)));
     }
-
+    
     public CompletableFuture<ResponseEntity<String>> ListAllScenesFallback(@RequestHeader("Authorization") String token, ResourceNotFoundException ex) {
         return CompletableFuture.completedFuture(ResponseEntity.status(404).body("Admin service is not available at the moment. Please try again later. (Scene service fallback method)"));
+    }
+
+    @GetMapping("/ownerCheck/{sceneId}")
+    public ResponseEntity<Boolean> ownerCheck(@RequestHeader("Authorization") String token, @PathVariable String sceneId) {
+        return ResponseEntity.ok(sceneService.ownerCheck(token, sceneId));
     }
 
     @PostMapping
