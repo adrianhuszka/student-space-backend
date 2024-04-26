@@ -31,6 +31,7 @@
         <dockerusername>${env.DOCKER_USERNAME}</dockerusername>
         <!--suppress UnresolvedMavenProperty -->
         <dockerpassword>${env.DOCKER_USERNAME}</dockerpassword>
+        <token>${env.token}</token>
     </properties>
     <dependencies>
         <dependency>
@@ -47,6 +48,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.jetbrains/annotations -->
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>24.1.0</version>
         </dependency>
     </dependencies>
 
@@ -91,10 +98,11 @@
                         </platforms>
                     </from>
                     <to>
-                        <image>registry.hub.docker.com/tdadarkangel/${project.artifactId}:${project.version}</image>
+                        <!-- <image>registry.hub.docker.com/tdadarkangel/${project.artifactId}:${project.version}</image> -->
+                        <image>docker.pkg.github.com/adrianhuszka/student-space-backend/${project.artifactId}:${project.version}</image>
                         <auth>
-                            <username>${dockerusername}</username>
-                            <password>${dockerpassword}</password>
+                            <username>adrianhuszka</username>
+                            <password>${token}</password>
                         </auth>
                     </to>
                 </configuration>
