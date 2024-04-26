@@ -100,8 +100,8 @@
                         <!-- <image>registry.hub.docker.com/tdadarkangel/${project.artifactId}:${project.version}</image> -->
                         <image>docker.pkg.github.com/tdadarkangel/student-space-backend/${project.artifactId}:${project.version}</image>
                         <auth>
-                            <username>${dockerusername}</username>
-                            <password>${dockerpassword}</password>
+                            <username>adrianhuszka</username>
+                            <password>${token}</password>
                         </auth>
                     </to>
                 </configuration>
