@@ -13,4 +13,3 @@ jobs:
         with:
           PASSWORD: ${{ secrets.GITHUB_TOKEN }}
           java-version: 21
-          module: API
