@@ -31,6 +31,7 @@
         <dockerusername>${env.DOCKER_USERNAME}</dockerusername>
         <!--suppress UnresolvedMavenProperty -->
         <dockerpassword>${env.DOCKER_USERNAME}</dockerpassword>
+        <!--suppress UnresolvedMavenProperty -->
         <token>${env.token}</token>
     </properties>
     <dependencies>
@@ -98,7 +99,6 @@
                         </platforms>
                     </from>
                     <to>
-                        <!-- <image>registry.hub.docker.com/tdadarkangel/${project.artifactId}:${project.version}</image> -->
                         <image>ghcr.io/adrianhuszka/student-space-backend/${project.artifactId}:${project.version}</image>
                         <auth>
                             <username>adrianhuszka</username>

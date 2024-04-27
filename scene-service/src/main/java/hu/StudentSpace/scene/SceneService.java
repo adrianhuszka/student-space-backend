@@ -6,6 +6,9 @@ import hu.StudentSpace.exception.ResourceNotFoundException;
 import hu.StudentSpace.keycloakHooks.GroupEntityHookRepository;
 import hu.StudentSpace.keycloakHooks.UserEntityHookRepository;
 import hu.StudentSpace.sceneGroupMembership.SceneGroupMembership;
+import hu.StudentSpace.sceneItems.SceneItemType;
+import hu.StudentSpace.sceneItems.SceneItems;
+import hu.StudentSpace.sceneItems.SceneReturnItems;
 import hu.StudentSpace.sceneUserMenbership.SceneUserMembership;
 import hu.StudentSpace.sceneUserMenbership.SceneUserMembershipRepository;
 import hu.StudentSpace.utils.JwtDecoder;
@@ -14,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +61,10 @@ public class SceneService {
                 scenes.addAll(sceneRepository.findAllBySceneGroupMembership(userId, groupId));
             }
         }
+
+        scenes.forEach(scene -> {
+            scene.setItems(getSceneItems(scene.getId(), token));
+        });
 
         return scenes;
     }
@@ -106,6 +114,8 @@ public class SceneService {
         );
 
         sceneRepository.save(savedScene);
+
+        createStarterItems(savedScene.getId().toString(), token);
     }
 
     public void update(@NotNull final SceneRequest sceneRequest, @NotNull final String token) {
@@ -221,5 +231,50 @@ public class SceneService {
         scene.setDeletedAt(new Timestamp(System.currentTimeMillis()));
 
         sceneRepository.save(scene);
+    }
+
+    @NotNull
+    private List<SceneReturnItems> getSceneItems(@NotNull final UUID sceneId, final String token) {
+        final var forum = webClientBuilder.build()
+                .get()
+                .uri("http://forum-service/api/v1/forum/forums/listByScene/" + sceneId + "/" + ownerCheck(token, sceneId.toString()))
+                .header("Authorization", token)
+                .retrieve()
+                .bodyToFlux(SceneReturnItems.class)
+                .collectList()
+                .block();
+
+        if(forum != null)
+            forum.forEach(forumItem -> forumItem.setType(SceneItemType.FORUM));
+
+        return forum;
+    }
+
+    private void createStarterItems(final String sceneId, final String token) {
+        final var scene = sceneRepository.findById(UUID.fromString(sceneId))
+                .orElseThrow(() -> new ResourceNotFoundException("Scene not found"));
+
+        final var createdForum = webClientBuilder.build()
+                .post()
+                .uri("http://forum-service/api/v1/forum/forums")
+                .header("Authorization", token)
+                .bodyValue(new Payload(sceneId, "General", "General discussion"))
+                .retrieve()
+                .bodyToMono(UUID.class)
+                .block();
+
+        scene.setDbItems(
+                List.of(
+                        SceneItems.builder()
+                                .id(createdForum)
+                                .type(SceneItemType.FORUM)
+                                .build()
+                )
+        );
+
+        sceneRepository.save(scene);
+    }
+
+    private record Payload(String sceneId, String name, String description) implements Serializable {
     }
 }

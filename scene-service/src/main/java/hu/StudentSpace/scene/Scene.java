@@ -2,6 +2,8 @@ package hu.StudentSpace.scene;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import hu.StudentSpace.sceneGroupMembership.SceneGroupMembership;
+import hu.StudentSpace.sceneItems.SceneItems;
+import hu.StudentSpace.sceneItems.SceneReturnItems;
 import hu.StudentSpace.sceneUserMenbership.SceneUserMembership;
 import jakarta.persistence.*;
 import lombok.*;
@@ -58,4 +60,12 @@ public class Scene implements Serializable {
     @JsonBackReference
     @OneToMany(mappedBy = "scene", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<SceneGroupMembership> sceneGroupMembership;
+
+    @JsonBackReference
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "scene_items", schema = "scene_service", joinColumns = @JoinColumn(name = "scene_id"))
+    private List<SceneItems> dbItems;
+
+    @Transient
+    private List<SceneReturnItems> items;
 }

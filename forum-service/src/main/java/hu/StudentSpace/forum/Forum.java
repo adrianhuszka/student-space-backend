@@ -29,11 +29,12 @@ public class Forum implements Serializable {
 
     @Column(unique = true, nullable = false)
     private String name;
+    private String description;
 
     @Column(nullable = false)
     private UUID sceneId;
 
-    @OneToMany(mappedBy = "forum", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "forum", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<ForumMessages> messages;
 
     @CreationTimestamp

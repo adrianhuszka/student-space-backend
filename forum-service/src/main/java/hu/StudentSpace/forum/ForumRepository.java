@@ -10,6 +10,6 @@ import java.util.UUID;
 @Repository
 public interface ForumRepository extends JpaRepository<Forum, UUID> {
 
-    @Query("SELECT f FROM Forum f WHERE f.sceneId = :sceneId AND (f.isDeleted = false OR :owner)")
+    @Query("SELECT f FROM Forum f WHERE f.sceneId = :sceneId AND (f.isDeleted = false OR :owner = true)")
     List<Forum> findAllBySceneIdAndDeletedFalse(UUID sceneId, boolean owner);
 }
