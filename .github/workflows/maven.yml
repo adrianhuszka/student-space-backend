@@ -39,6 +39,6 @@ jobs:
     needs: build
     steps:
       - name: Call Webhook
-        uses: distributhor/workflow-webhook
+        uses: distributhor/workflow-webhook@v3
         with:
           webhook_url: ${{ secrets.WEBHOOK_URL }}
