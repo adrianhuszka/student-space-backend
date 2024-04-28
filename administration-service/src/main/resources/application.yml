@@ -3,6 +3,7 @@ app:
   keycloak-client-id: ${KEYCLOAK_CLIENT_ID}
   keycloak-client-secret: ${KEYCLOAK_CLIENT_SECRET}
   keycloak-realm: ${KEYCLOAK_REALM}
+  eureka-server: localhost
 
 spring:
   application:
@@ -57,4 +58,4 @@ management:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://${app.eureka-server}:8761/eureka

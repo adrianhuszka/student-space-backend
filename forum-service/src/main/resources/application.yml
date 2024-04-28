@@ -1,6 +1,6 @@
 app:
   eureka-server: localhost
-  keycloak-url: http://138.3.248.186:8888
+  keycloak-url: ${KEYCLOAK_URL}
 
 server:
   port: 0
@@ -83,7 +83,7 @@ management:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://${app.eureka-server}:8761/eureka
 
 #Resilinece4j Properties for Admin Service
 resilience4j:
