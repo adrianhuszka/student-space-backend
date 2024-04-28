@@ -24,6 +24,8 @@ public class SecurityConfig {
             "http://127.0.0.1:3000",
             "http://84.3.183.248:3000",
             "http://localhost:4200",
+            "http://138.3.248.186",
+            "https://138.3.248.186"
     };
 
     @Bean
