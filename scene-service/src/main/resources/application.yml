@@ -46,7 +46,6 @@ spring:
         path:
           default: /
 
-
 logging:
   level:
     root: info
@@ -83,7 +82,7 @@ management:
 eureka:
   client:
     service-url:
-      defaultZone: http://${app.keycloak-url}:8761/eureka
+      defaultZone: http://${app.eureka-server}:8761/eureka
 
 #Resilinece4j Properties for Admin Service
 resilience4j:
