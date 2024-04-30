@@ -62,9 +62,9 @@ public class SceneService {
             }
         }
 
-        scenes.forEach(scene -> {
-            scene.setItems(getSceneItems(scene.getId(), token));
-        });
+        scenes.forEach(scene ->
+            scene.setItems(getSceneItems(scene.getId(), token))
+        );
 
         return scenes;
     }
@@ -81,7 +81,20 @@ public class SceneService {
             }
         }
 
+        scenes.forEach(scene ->
+            scene.setItems(getSceneItems(scene.getId(), token))
+        );
+
         return scenes;
+    }
+
+    public Scene getSceneById(@NotNull final String sceneId, @NotNull final String token) {
+        final var scene = sceneRepository.findById(UUID.fromString(sceneId))
+                .orElseThrow(() -> new ResourceNotFoundException("Scene not found"));
+
+        scene.setItems(getSceneItems(scene.getId(), token));
+
+        return scene;
     }
 
     public void createScene(@NotNull final SceneRequest sceneRequest, @NotNull final String token) {
@@ -247,6 +260,7 @@ public class SceneService {
         if(forum != null)
             forum.forEach(forumItem -> forumItem.setType(SceneItemType.FORUM));
 
+        assert forum != null;
         return forum;
     }
 

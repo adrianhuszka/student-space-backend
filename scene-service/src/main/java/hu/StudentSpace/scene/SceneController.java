@@ -37,6 +37,18 @@ public class SceneController {
         return CompletableFuture.completedFuture(ResponseEntity.status(404).body("Admin service is not available at the moment. Please try again later. (Scene service fallback method)"));
     }
 
+    @GetMapping("/{sceneId}")
+    @Retry(name = "services")
+    @TimeLimiter(name = "services")
+    @CircuitBreaker(name = "services", fallbackMethod = "GetSceneFallback")
+    public CompletableFuture<ResponseEntity<Scene>> getScene(@RequestHeader("Authorization") String token, @PathVariable String sceneId) {
+        return CompletableFuture.supplyAsync(() -> ResponseEntity.ok(sceneService.getSceneById(sceneId, token)));
+    }
+
+    public CompletableFuture<ResponseEntity<String>> GetSceneFallback(@RequestHeader("Authorization") String token, @PathVariable String sceneId, ResourceNotFoundException ex) {
+        return CompletableFuture.completedFuture(ResponseEntity.status(404).body("Admin service is not available at the moment. Please try again later. (Scene service fallback method)"));
+    }
+
     @GetMapping("/ownerCheck/{sceneId}")
     public ResponseEntity<Boolean> ownerCheck(@RequestHeader("Authorization") String token, @PathVariable String sceneId) {
         return ResponseEntity.ok(sceneService.ownerCheck(token, sceneId));
