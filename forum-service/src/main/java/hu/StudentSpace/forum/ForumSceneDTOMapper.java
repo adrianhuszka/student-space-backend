@@ -42,7 +42,13 @@ public class ForumSceneDTOMapper implements Function<Forum, ForumSceneDTO> {
                         .filter(message -> !message.isDeleted())
                         .max(Comparator.comparing(ForumMessages::getCreatedAt))
                         .map(ForumMessages::getMessage)
-                        .orElse(null))
+                        .orElse(null)
+                )
+                .lastMessageCreatedAt(forum.getMessages().stream()
+                        .max(Comparator.comparing(ForumMessages::getCreatedAt))
+                        .map(ForumMessages::getCreatedAt).orElse(null)
+                )
+                .messageCount(forum.getMessages().size())
                 .unreadCount(count)
                 .build();
     }

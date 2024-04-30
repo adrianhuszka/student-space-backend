@@ -19,5 +19,7 @@ public class ForumSceneDTO {
     private boolean isDeleted;
     private Timestamp deletedAt;
     private String lastMessage;
+    private Timestamp lastMessageCreatedAt;
+    private int messageCount;
     private int unreadCount;
 }
