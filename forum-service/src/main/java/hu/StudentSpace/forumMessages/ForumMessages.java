@@ -58,6 +58,6 @@ public class ForumMessages implements Serializable {
     private boolean isDeleted = false;
     private Timestamp deletedAt;
 
-    @OneToMany(mappedBy = "forumMessage", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "forumMessage", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<ForumLikesMessage> likes;
 }

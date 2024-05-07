@@ -27,7 +27,7 @@ public class Forum implements Serializable {
     @GeneratedValue
     private UUID id;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String name;
     private String description;
 
