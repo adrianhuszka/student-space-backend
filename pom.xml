@@ -21,6 +21,8 @@
         <module>administration-service</module>
         <module>scene-service</module>
         <module>forum-service</module>
+        <module>news-service</module>
+        <module>news-service</module>
     </modules>
     <properties>
         <java.version>21</java.version>
