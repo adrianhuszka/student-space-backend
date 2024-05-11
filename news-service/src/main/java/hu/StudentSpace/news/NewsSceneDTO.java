@@ -1,4 +1,4 @@
-package hu.StudentSpace.forum;
+package hu.StudentSpace.news;
 
 import lombok.*;
 

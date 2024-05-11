@@ -1,6 +1,6 @@
 package hu.StudentSpace.news;
 
-import hu.StudentSpace.forumMessages.ForumMessages;
+import hu.StudentSpace.newsMessages.NewsMessages;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
