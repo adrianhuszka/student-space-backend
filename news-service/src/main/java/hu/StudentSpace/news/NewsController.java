@@ -14,10 +14,10 @@ public class NewsController {
     private final NewsService newsService;
 
     @GetMapping("/listByScene/{sceneId}/{isOwner}")
-    public ResponseEntity<List<NewsSceneDTO>> listNewssBySceneId(@PathVariable String sceneId,
+    public ResponseEntity<List<NewsSceneDTO>> listNewsBySceneId(@PathVariable String sceneId,
                                                                 @PathVariable Boolean isOwner,
                                                                 @RequestHeader("Authorization") String token ){
-        return ResponseEntity.ok(newsService.listNewssBySceneId(sceneId, isOwner, token));
+        return ResponseEntity.ok(newsService.listNewsBySceneId(sceneId, isOwner, token));
     }
 
     @PostMapping

@@ -2,7 +2,7 @@ package hu.StudentSpace.news;
 
 import hu.StudentSpace.exception.AccessDeniedException;
 import hu.StudentSpace.exception.ResourceNotFoundException;
-import hu.StudentSpace.newsMessageRead.newsMessageReadService;
+import hu.StudentSpace.newsMessageRead.NewsMessageReadService;
 import hu.StudentSpace.utils.JwtDecoder;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
@@ -23,7 +23,7 @@ public class NewsService {
     private final WebClient.Builder webClientBuilder;
     private final JwtDecoder jwtDecoder;
 
-    public List<NewsSceneDTO> listnewssBySceneId(@NotNull final String sceneId, Boolean isOwner, String token) {
+    public List<NewsSceneDTO> listNewsBySceneId(@NotNull final String sceneId, Boolean isOwner, String token) {
         final var userId = jwtDecoder.decode(token).getSub();
         final var list = newsRepository
                 .findAllBySceneIdAndDeletedFalse(UUID.fromString(sceneId), isOwner);
@@ -44,20 +44,20 @@ public class NewsService {
                 .toList();
     }
 
-    public UUID createnews(@NotNull final newsRequest news, String token) {
+    public UUID createNews(@NotNull final NewsRequest news, String token) {
         ownerCheck(token, news.sceneId());
 
-        return newsRepository.save(news.builder()
+        return newsRepository.save(News.builder()
                 .name(news.name())
                 .sceneId(UUID.fromString(news.sceneId()))
                 .description(news.description())
                 .build()).getId();
     }
 
-    public void updatenews(@NotNull final newsRequest news, String token) {
+    public void updateNews(@NotNull final NewsRequest news, String token) {
         ownerCheck(token, news.sceneId());
 
-        newsRepository.save(news.builder()
+        newsRepository.save(News.builder()
                 .id(UUID.fromString(news.id()))
                 .name(news.name())
                 .description(news.description())
@@ -65,7 +65,7 @@ public class NewsService {
                 .build());
     }
 
-    public void deletenews(@NotNull final String newsId, String token) {
+    public void deleteNews(@NotNull final String newsId, String token) {
         final var news = newsRepository.findById(UUID.fromString(newsId)).orElseThrow(
                 () -> new ResourceNotFoundException("news not found!")
         );

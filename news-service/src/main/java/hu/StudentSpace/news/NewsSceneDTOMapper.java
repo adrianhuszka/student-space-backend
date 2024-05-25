@@ -1,8 +1,6 @@
 package hu.StudentSpace.news;
 
-import hu.StudentSpace.newsMessageRead.newsMessageReadService;
-import hu.StudentSpace.newsMessages.newsMessages;
-import lombok.RequiredArgsConstructor;
+import hu.StudentSpace.newsMessages.NewsMessages;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +11,7 @@ import java.util.function.Function;
 public class NewsSceneDTOMapper implements Function<News, NewsSceneDTO> {
     @Override
     public NewsSceneDTO apply(@NotNull News news) {
-        return newsSceneDTO.builder()
+        return NewsSceneDTO.builder()
                 .id(news.getId())
                 .name(news.getName())
                 .description(news.getDescription())
@@ -23,14 +21,14 @@ public class NewsSceneDTOMapper implements Function<News, NewsSceneDTO> {
                 .deletedAt(news.getDeletedAt())
                 .lastMessage(news.getMessages().stream()
                         .filter(message -> !message.isDeleted())
-                        .max(Comparator.comparing(newsMessages::getCreatedAt))
-                        .map(newsMessages::getMessage)
+                        .max(Comparator.comparing(NewsMessages::getCreatedAt))
+                        .map(NewsMessages::getMessage)
                         .orElse(null))
                 .build();
     }
 
     public NewsSceneDTO apply(@NotNull News news, int count) {
-        return newsSceneDTO.builder()
+        return NewsSceneDTO.builder()
                 .id(news.getId())
                 .name(news.getName())
                 .description(news.getDescription())
@@ -40,13 +38,13 @@ public class NewsSceneDTOMapper implements Function<News, NewsSceneDTO> {
                 .deletedAt(news.getDeletedAt())
                 .lastMessage(news.getMessages().stream()
                         .filter(message -> !message.isDeleted())
-                        .max(Comparator.comparing(newsMessages::getCreatedAt))
-                        .map(newsMessages::getMessage)
+                        .max(Comparator.comparing(NewsMessages::getCreatedAt))
+                        .map(NewsMessages::getMessage)
                         .orElse(null)
                 )
                 .lastMessageCreatedAt(news.getMessages().stream()
-                        .max(Comparator.comparing(newsMessages::getCreatedAt))
-                        .map(newsMessages::getCreatedAt).orElse(null)
+                        .max(Comparator.comparing(NewsMessages::getCreatedAt))
+                        .map(NewsMessages::getCreatedAt).orElse(null)
                 )
                 .messageCount(news.getMessages().size())
                 .unreadCount(count)
