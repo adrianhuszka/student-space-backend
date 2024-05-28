@@ -1,2 +1,9 @@
-package hu.StudentSpace.userData;public interface UserDataRepository {
+package hu.StudentSpace.userData;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface UserDataRepository extends JpaRepository<UserData, String> {
+
 }
