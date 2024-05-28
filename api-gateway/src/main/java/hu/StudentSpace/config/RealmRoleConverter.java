@@ -17,19 +17,20 @@ public class RealmRoleConverter implements Converter<Jwt, Collection<GrantedAuth
     @SuppressWarnings("unchecked")
     public Collection<GrantedAuthority> convert(@NonNull Jwt jwt) {
         Object realmAccessObject = jwt.getClaims().get("realm_access");
+        System.out.println(realmAccessObject);
         if (realmAccessObject instanceof Map) {
             Map<String, ?> realmAccess = (Map<String, ?>) realmAccessObject;
             Object rolesObject = realmAccess.get("roles");
+            System.out.println(rolesObject);
             if (rolesObject instanceof List<?> roles) {
                 return roles.stream()
-                        .filter(String.class::isInstance) // Filter out non-String elements
-                        .map(String.class::cast) // Cast each element to String
+                        .filter(String.class::isInstance)
+                        .map(String.class::cast)
                         .map(roleName -> "ROLE_" + roleName)
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
             }
         }
-        // Handle invalid or missing data gracefully
         return Collections.emptyList();
     }
 }
