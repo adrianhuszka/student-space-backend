@@ -52,7 +52,7 @@ public class SecurityConfig {
 
                         // Forum endpoints
                         .pathMatchers("/api/v1/forum/forums/**", "POST", "PUT", "DELETE").hasAnyRole("ROLE_ADMIN", "ROLE_TEACHER")
-                        .pathMatchers("/api/v1/forum/forums/**", "GET").hasAnyRole("ROLE_ADMIN", "ROLE_TEACHER", "ROLE_STUDENT")
+                        .pathMatchers("/api/v1/forum/forums/**", "GET").hasAnyRole("ROLE_ADMIN", "ROLE_TEACHER", "ROLE_STUDENT", "ADMIN")
                         .pathMatchers("/api/v1/forum/messages/**").hasAnyRole("ROLE_ADMIN", "ROLE_TEACHER", "ROLE_STUDENT")
                         .pathMatchers("/api/v1/forum/message-likes/**").hasAnyRole("ROLE_ADMIN", "ROLE_TEACHER", "ROLE_STUDENT")
 

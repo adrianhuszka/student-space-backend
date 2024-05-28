@@ -277,11 +277,24 @@ public class SceneService {
                 .bodyToMono(UUID.class)
                 .block();
 
+        final var createdNews = webClientBuilder.build()
+                .post()
+                .uri("http://news-service/api/v1/news/room")
+                .header("Authorization", token)
+                .bodyValue(new Payload(sceneId, "General", "General news"))
+                .retrieve()
+                .bodyToMono(UUID.class)
+                .block();
+
         scene.setDbItems(
                 List.of(
                         SceneItems.builder()
                                 .id(createdForum)
                                 .type(SceneItemType.FORUM)
+                                .build(),
+                        SceneItems.builder()
+                                .id(createdNews)
+                                .type(SceneItemType.NEWS)
                                 .build()
                 )
         );
