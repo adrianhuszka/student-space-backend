@@ -248,6 +248,8 @@ public class SceneService {
 
     @NotNull
     private List<SceneReturnItems> getSceneItems(@NotNull final UUID sceneId, final String token) {
+        List<SceneReturnItems> ret = new ArrayList<>();
+
         final var forum = webClientBuilder.build()
                 .get()
                 .uri("http://forum-service/api/v1/forum/forums/listByScene/" + sceneId + "/" + ownerCheck(token, sceneId.toString()))
@@ -257,11 +259,26 @@ public class SceneService {
                 .collectList()
                 .block();
 
-        if(forum != null)
-            forum.forEach(forumItem -> forumItem.setType(SceneItemType.FORUM));
+        final var news = webClientBuilder.build()
+                .get()
+                .uri("http://forum-service/api/v1/news/room/listByScene/" + sceneId + "/" + ownerCheck(token, sceneId.toString()))
+                .header("Authorization", token)
+                .retrieve()
+                .bodyToFlux(SceneReturnItems.class)
+                .collectList()
+                .block();
 
-        assert forum != null;
-        return forum;
+        if(forum != null) {
+            forum.forEach(forumItem -> forumItem.setType(SceneItemType.FORUM));
+            ret.addAll(forum);
+        }
+
+        if(news != null) {
+            news.forEach(newsItem -> newsItem.setType(SceneItemType.NEWS));
+            ret.addAll(news);
+        }
+
+        return ret;
     }
 
     private void createStarterItems(final String sceneId, final String token) {
