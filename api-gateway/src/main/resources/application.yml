@@ -47,6 +47,13 @@ spring:
             - Path=/api/v1/forum/**
           filters:
             - AddResponseHeader=X-Powered-By, StudentSpace Gateway Service
+        # news-service routing
+        - id: news-service
+          uri: lb://news-service
+          predicates:
+            - Path=/api/v1/news/**
+          filters:
+            - AddResponseHeader=X-Powered-By, StudentSpace Gateway Service
   security:
     oauth2:
       resourceserver:

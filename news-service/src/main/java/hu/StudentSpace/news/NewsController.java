@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/news/newss")
+@RequestMapping("/api/v1/news/room")
 public class NewsController {
     private final NewsService newsService;
 
