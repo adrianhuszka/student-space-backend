@@ -7,7 +7,7 @@ server:
 
 spring:
   application:
-    name: forum-service
+    name: news-service
   security:
     oauth2:
       resourceserver:
