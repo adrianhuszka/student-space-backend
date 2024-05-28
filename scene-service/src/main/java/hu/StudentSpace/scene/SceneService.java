@@ -261,7 +261,7 @@ public class SceneService {
 
         final var news = webClientBuilder.build()
                 .get()
-                .uri("http://forum-service/api/v1/news/room/listByScene/" + sceneId + "/" + ownerCheck(token, sceneId.toString()))
+                .uri("http://news-service/api/v1/news/room/listByScene/" + sceneId + "/" + ownerCheck(token, sceneId.toString()))
                 .header("Authorization", token)
                 .retrieve()
                 .bodyToFlux(SceneReturnItems.class)
