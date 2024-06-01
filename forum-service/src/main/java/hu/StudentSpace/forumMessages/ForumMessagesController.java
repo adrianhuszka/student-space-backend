@@ -21,8 +21,8 @@ public class ForumMessagesController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createForumMessage(@RequestBody final ForumMessagesRequest forumMessages) {
-        forumMessagesService.createForumMessage(forumMessages);
+    public ResponseEntity<Void> createForumMessage(@RequestBody final ForumMessagesRequest forumMessages, @RequestHeader("Authorization") final String token) {
+        forumMessagesService.createForumMessage(forumMessages, token);
         return ResponseEntity.ok().build();
     }
 

@@ -29,7 +29,8 @@ public class ForumMessagesService {
         return forumMessagesRepository.findAllByForumId(UUID.fromString(forumId), pageable);
     }
 
-    public void createForumMessage(@NotNull final ForumMessagesRequest forumMessages) {
+    public void createForumMessage(@NotNull final ForumMessagesRequest forumMessages, String token) {
+        final var userId = jwtDecoder.decode(token).getSub();
         final var forum = forumRepository.findById(UUID.fromString(forumMessages.forumId()))
                 .orElseThrow(() -> new RuntimeException("Forum not found"));
 
@@ -40,7 +41,7 @@ public class ForumMessagesService {
         final var newForumMessage = ForumMessages.builder()
                 .forum(forum)
                 .message(forumMessages.message())
-                .senderId(forumMessages.senderId())
+                .senderId(userId)
                 .answerTo(answerTo)
                 .build();
 
