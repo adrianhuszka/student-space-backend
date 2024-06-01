@@ -11,6 +11,6 @@ import java.util.UUID;
 @Repository
 public interface ForumMessagesRepository extends JpaRepository<ForumMessages, UUID> {
 
-    @Query("SELECT f FROM ForumMessages f WHERE f.forum.id = :forumId")
+    @Query("SELECT f FROM ForumMessages f WHERE f.forum.id = :forumId AND f.isDeleted = false")
     Page<ForumMessages> findAllByForumId(UUID forumId, Pageable pageable);
 }
