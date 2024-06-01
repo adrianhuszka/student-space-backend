@@ -30,7 +30,6 @@ public class ForumLikesMessage implements Serializable {
     @JoinColumn(name = "forum_message_id")
     private ForumMessages forumMessage;
 
-    @JsonBackReference
     @Column(name = "user_id")
     private String userId;
 
