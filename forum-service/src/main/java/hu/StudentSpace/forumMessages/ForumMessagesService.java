@@ -84,7 +84,7 @@ public class ForumMessagesService {
     private boolean ownerCheck(String token, String sceneId) {
         final var ownerCheck = webClientBuilder.build()
                 .get()
-                .uri("http://localhost:8080/api/v1/scenes/ownerCheck/" + sceneId)
+                .uri("http://scene-service/api/v1/scenes/ownerCheck/" + sceneId)
                 .header("Authorization", token)
                 .retrieve()
                 .bodyToMono(Boolean.class)
