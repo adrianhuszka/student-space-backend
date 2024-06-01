@@ -18,16 +18,17 @@ public class ForumLikesMessageService {
     private final ForumMessagesRepository forumMessagesRepository;
     private final ForumLikesMessageRepository forumLikesMessageRepository;
 
-    public void addLike(@NotNull final ForumLikesMessageRequest request) {
+    public void addLike(@NotNull final ForumLikesMessageRequest request, String token) {
         final var forumMessage = forumMessagesRepository.findById(UUID.fromString(request.forumMessageId())).orElseThrow(
                 () -> new ResourceNotFoundException("Forum message not found with id: " + request.forumMessageId())
         );
+        final var userId = jwtDecoder.decode(token).getSub();
 
         final var forumLikesMessage = forumLikesMessageRepository.save(
                 ForumLikesMessage
                         .builder()
                         .forumMessage(forumMessage)
-                        .userId(request.userId())
+                        .userId(userId)
                         .liked(LikedEnum.fromBoolean(request.isLike()))
                         .build()
         );

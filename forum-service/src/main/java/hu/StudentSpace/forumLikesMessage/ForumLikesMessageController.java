@@ -11,8 +11,8 @@ public class ForumLikesMessageController {
     private final ForumLikesMessageService forumLikesMessageService;
 
     @PostMapping
-    public ResponseEntity<Void> addLike(@RequestBody ForumLikesMessageRequest request) {
-        forumLikesMessageService.addLike(request);
+    public ResponseEntity<Void> addLike(@RequestBody ForumLikesMessageRequest request, @RequestHeader("Authorization") String token) {
+        forumLikesMessageService.addLike(request, token);
         return ResponseEntity.ok().build();
     }
 
