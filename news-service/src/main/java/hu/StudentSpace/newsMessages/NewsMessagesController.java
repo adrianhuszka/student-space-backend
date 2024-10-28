@@ -21,8 +21,8 @@ public class NewsMessagesController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createNewsMessage(@RequestBody final NewsMessagesRequest newsMessages) {
-        newsMessagesService.createNewsMessage(newsMessages);
+    public ResponseEntity<Void> createNewsMessage(@RequestBody final NewsMessagesRequest newsMessages, @RequestHeader("Authorization") final String token) {
+        newsMessagesService.createNewsMessage(newsMessages, token);
         return ResponseEntity.ok().build();
     }
 

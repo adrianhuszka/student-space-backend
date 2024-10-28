@@ -29,7 +29,8 @@ public class NewsMessagesService {
         return newsMessagesRepository.findAllByNewsId(UUID.fromString(newsId), pageable);
     }
 
-    public void createNewsMessage(@NotNull final NewsMessagesRequest newsMessages) {
+    public void createNewsMessage(@NotNull final NewsMessagesRequest newsMessages, String token) {
+        final var userId = jwtDecoder.decode(token).getSub();
         final var news = newsRepository.findById(UUID.fromString(newsMessages.newsId()))
                 .orElseThrow(() -> new RuntimeException("News not found"));
 
@@ -40,7 +41,7 @@ public class NewsMessagesService {
         final var newNewsMessage = NewsMessages.builder()
                 .news(news)
                 .message(newsMessages.message())
-                .senderId(newsMessages.senderId())
+                .senderId(userId)
                 .answerTo(answerTo)
                 .build();
 
@@ -83,7 +84,7 @@ public class NewsMessagesService {
     private boolean ownerCheck(String token, String sceneId) {
         final var ownerCheck = webClientBuilder.build()
                 .get()
-                .uri("http://localhost:8080/api/v1/scenes/ownerCheck/" + sceneId)
+                .uri("http://scene-service/api/v1/scenes/ownerCheck/" + sceneId)
                 .header("Authorization", token)
                 .retrieve()
                 .bodyToMono(Boolean.class)
