@@ -44,7 +44,7 @@ public class ForumMessages implements Serializable {
     @Formula("(SELECT ue.username FROM keycloak.user_entity ue WHERE ue.id = sender_id)")
     private String senderName;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     @JoinColumn(name = "answer_to_id")
     private ForumMessages answerTo;
 
